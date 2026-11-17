@@ -1,6 +1,10 @@
+// The store API's order statuses (see its OpenAPI spec: paid | fulfilled | cancelled).
+// Only `fulfilled` orders can be returned. The earlier values are kept so
+// existing code that referenced them still type-checks.
 export type OrderStatus =
   | "pending"
   | "paid"
+  | "fulfilled"
   | "shipped"
   | "delivered"
   | "cancelled";
