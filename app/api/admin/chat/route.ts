@@ -1,16 +1,10 @@
 /**
- * This is where the admin chat API route will live.
+ * Intentionally empty.
  *
- * During the workshop you'll wire this up to the agent in `lib/agent.ts`
- * using `createAgentUIStreamResponse` from the AI SDK. The chat panel in
- * `components/agent-chat.tsx` posts here once you swap its placeholder
- * `useState` for `useChat`.
- *
- * Workshop docs: https://agent-foundations-certification.vercel.app/docs/admin-chat-agent
+ * The admin agent does NOT live here. The admin login cookie is scoped to
+ * /admin, so it is never sent to /api/*, and proxy.ts only guards /admin/*.
+ * A working admin route at this path would have been reachable without
+ * logging in. The admin chat is served from /admin/api/chat instead.
  */
-
 export const POST = async () =>
-  new Response(
-    "Not implemented yet — finish the chat-agent workshop step to enable this route.",
-    { status: 501 },
-  );
+  Response.json({ error: "Not found." }, { status: 404 });

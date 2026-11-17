@@ -254,6 +254,27 @@ export async function getProducts(
   });
 }
 
+/**
+ * Same query as `getProducts`, but also returns the pagination metadata so a
+ * caller (the shopping agent) can say how many products matched in total.
+ */
+export async function getProductsPage(
+  params: GetProductsParams = {},
+): Promise<{ data: Product[]; meta: { pagination?: PaginationMeta } }> {
+  const qs = new URLSearchParams();
+  if (params.page) qs.set("page", String(params.page));
+  if (params.limit) qs.set("limit", String(params.limit));
+  if (params.category) qs.set("category", params.category);
+  if (params.search) qs.set("search", params.search);
+  if (params.featured !== undefined)
+    qs.set("featured", params.featured ? "true" : "false");
+
+  const path = qs.toString() ? `/products?${qs}` : "/products";
+  return requestWithMeta<Product[], { pagination?: PaginationMeta }>(path, {
+    next: { revalidate: DEFAULT_REVALIDATE, tags: ["products"] },
+  });
+}
+
 export async function getProductById(idOrSlug: string): Promise<Product> {
   return request<Product>(`/products/${encodeURIComponent(idOrSlug)}`, {
     next: {
